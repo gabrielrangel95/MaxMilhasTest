@@ -2,15 +2,15 @@
 
 Project made with <a href="https://facebook.github.io/react-native/">React-Native</a>
 
-For initialize the project run 'yarn install', then run for:
+For initialize the project run <strong>'yarn install'</strong>, then run for:
 
-Android: 'react-native run-android'
+<strong>Android:</strong> 'react-native run-android'
 
-IOS: 'react-native run-ios'
+<strong>IOS:</strong> 'react-native run-ios'
 
 
 
-Libraries used:
+<h1>Libraries used:</h1>
 
 For UI:  <a href="https://nativebase.io/">NativeBase</a>
 
