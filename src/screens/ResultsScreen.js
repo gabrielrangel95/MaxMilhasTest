@@ -11,16 +11,16 @@ import { Container, Header, Content, Text, Left, Body, Right, Button, Icon, Titl
 
 export default class ResultsScreen extends Component {
   state = {
-    flights: [],
-    originalArray: [],
-    loading: true,
+    flights: [], //array with the current flights list
+    originalArray: [], //array with all flights returned from the api
+    loading: true, //stay loading while the api is searching
   }
   componentDidMount(){
-    var searched = this.props.navigation.state.params.search;
-    this.getFlightsResults(searched);
+    var searched = this.props.navigation.state.params.search; //get the searched params
+    this.getFlightsResults(searched); //call the method that consume the api
   }
 
-  getFlightsResults = async (search) =>{
+  getFlightsResults = async (search) =>{ // get the flights from the api
     console.log('Search',search)
     var api = "http://developer.goibibo.com/api/search/?app_id=2d9d7818&app_key=0aa65c300f6d5279dc14d52848517ad9&format=json";
     api = api + '&source='+search.source+'&destination='+search.destination+'&dateofdeparture='+search.departureDate+'&dateofarrival='+search.arrivalDate+'&seatingclass=E'+'&adults='+search.adults+'&children=0&infants=0&counter=100';
@@ -30,14 +30,14 @@ export default class ResultsScreen extends Component {
     .then((responseJson) => {
       console.log(responseJson.data.onwardflights);
       var flights = responseJson.data.onwardflights;
-      this.passReturnedToModel(flights)
+      this.passReturnedToModel(flights) //pass the flights objects returned and pass it to a model object
     })
     .catch((error) => {
       console.error(error);
     });
   }
 
-  async passReturnedToModel(flightsRecieved){
+  async passReturnedToModel(flightsRecieved){ //get the object returned from the api and pass it to a model object
     var novoArray = [];
     flightsRecieved.forEach((item)=>{
       var flight = new FullFlight();
@@ -90,12 +90,12 @@ export default class ResultsScreen extends Component {
       novoArray.push(flight);
     })
     console.log(novoArray)
-    await this.setState({flights: novoArray, originalArray: novoArray})
+    await this.setState({flights: novoArray, originalArray: novoArray}) //set the arrays on state
     console.log(this.state.flights)
     this.setState({loading: false})
   }
 
-  openAlertOrder(){
+  openAlertOrder(){ //open the alert with options to order the flights
     Alert.alert(
       'Ordenar por:',
       'Escolha a ordenacao dos voos:',
@@ -108,7 +108,7 @@ export default class ResultsScreen extends Component {
 
   }
 
-  openAlertFilter(){
+  openAlertFilter(){ //open the alert to filter the flights by company
     Alert.alert(
       'Filtrar por:',
       'Escolha sua companhia aerea',
@@ -124,22 +124,24 @@ export default class ResultsScreen extends Component {
 
   }
 
-  filterForLessPrice(){
+  async filterForLessPrice(){ //filter the flights for less price
+    this.setState({loading: true})
     var flights = this.state.flights;
-    flights.sort(function(a,b){
+    await flights.sort(function(a,b){
       return a.goingFlight.totalPrice - b.goingFlight.totalPrice
     })
-    this.setState({flights})
+    this.setState({flights, loading: false})
   }
 
-  filterForCompany(company){
+  async filterForCompany(company){ // filter the flights for company
+    this.setState({loading: true})
     var originalArray = this.state.originalArray;
     if(company === 'Todas'){
-      this.setState({flights: originalArray })
+      this.setState({flights: originalArray, loading: false })
     }else{
-      const filtered = originalArray.filter((item)=> item.goingFlight.airline === company)
+      const filtered =  await originalArray.filter((item)=> item.goingFlight.airline === company)
       console.log(filtered)
-      this.setState({flights: filtered})
+      this.setState({flights: filtered, loading: false})
     }
 
   }

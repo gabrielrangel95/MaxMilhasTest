@@ -2,7 +2,7 @@ import React from 'react'
 import { View } from 'react-native'
 import { Container, Header, Content, Text, Left, Body, Spinner, Right, Icon, Title, Button} from 'native-base'
 
-const Loading = function(props){
+const Loading = function(props){ //loading screen
   return(
     <Container>
       <Header style={{backgroundColor: '#1abc9c'}}>

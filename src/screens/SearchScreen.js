@@ -2,27 +2,69 @@ import React, {Component} from 'react'
 import {View,Image,StyleSheet, Alert} from 'react-native'
 import {Item, Input, Icon, Button,Text } from 'native-base'
 import Search from '../models/Search'
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 export default class SearchScreen extends Component{
   state = {
-    source: '',
+    source: '', 
     destination: '',
     departureDate: '',
+    departureDateToShow: '',
     arrivalDate: '',
+    arrivalDateToShow: '',
     adults: '',
+    isDatePickerDepartureVisible: false,
+    isDatePickerArrivalVisible: false,
   }
 
-  _onPesquisarClicked(){
-    const { source, destination, departureDate, arrivalDate, adults} = this.state;
-    if(source && destination && departureDate && arrivalDate && adults ){
+  _showDatePicker = (from) => { //show the date picker, based on from param passed
+    if(from === 'departureDate'){
+      this.setState({ isDatePickerDepartureVisible: true });
+    }else{
+      this.setState({ isDatePickerArrivalVisible: true });
+    }
+
+  }
+
+  _hideDateTimePicker = () => this.setState({ isDatePickerDepartureVisible: false, isDatePickerArrivalVisible: false }); //hide the date picker
+
+  _handleDatePicked = (date) => { //get the date choosed from date picker
+    var day = date.getDate(); //get the day
+    var month = date.getMonth(); //get the month
+    month = month +1; //month on JavaScript starts on 0 , so add 1
+    var year = date.getFullYear(); //get the year
+
+    if(day < 10){ //put 0 before the day if is less then 10, ex: if is 1, put 01
+      day = "0"+day
+    }
+    if(month < 10){ //put 0 before the month if is less then 10, ex: if is 1, put 01
+      month = "0"+month
+    }
+
+    var dateToShow = day+'/'+month+'/'+year; //date that will be show for the user on format 00/00/0000
+    var dateToSearch = year+month+day; //date that will be passed on search param for the next screen
+
+    if(this.state.isDatePickerDepartureVisible){ //if the departure picker is showing, put on departure date's variables
+      this.setState({departureDate: dateToSearch, departureDateToShow: dateToShow})
+    }else{ //else put on the arrival variables
+      this.setState({arrivalDate: dateToSearch, arrivalDateToShow: dateToShow})
+    }
+
+
+    this._hideDateTimePicker(); //hide after date selected
+  };
+
+  _onPesquisarClicked(){ //handle the search button selected
+    const { source, destination, departureDate, arrivalDate, adults} = this.state; //get the variables from state
+    if(source && destination && departureDate && arrivalDate && adults ){ //validate if is not null
       var search = new Search();
       search.source = source;
       search.destination = destination;
       search.departureDate = departureDate;
       search.arrivalDate = arrivalDate;
       search.adults = adults;
-      this.props.navigation.navigate('Results',{search: search})
-    }else{
+      this.props.navigation.navigate('Results',{search: search}) //navigate to results screen
+    }else{ //if is null emit an alert
       Alert.alert('Todos os campos são obrigatórios!')
     }
   }
@@ -56,19 +98,30 @@ export default class SearchScreen extends Component{
             <Item regular style={{width: 161.4, height: 54, backgroundColor: 'white'}}>
               <Input
                 placeholder='Data da ida'
-                onChangeText={(departureDate) => this.setState({departureDate})}
-                value={this.state.departureDate}
+                onFocus={()=>this._showDatePicker('departureDate')}
+                value={this.state.departureDateToShow}
               />
               <Icon active name='ios-calendar-outline' style={{color: '#1abc9c'}} />
             </Item>
+            <DateTimePicker
+              isVisible={this.state.isDatePickerDepartureVisible}
+              onConfirm={this._handleDatePicked}
+              onCancel={this._hideDateTimePicker}
+            />
             <Item regular style={styles.datesItem}>
               <Input
                 placeholder='Data da volta'
-                onChangeText={(arrivalDate) => this.setState({arrivalDate})}
-                value={this.state.arrivalDate}
+                onFocus={()=>this._showDatePicker('arrivalDate')}
+                value={this.state.arrivalDateToShow}
               />
               <Icon active name='ios-calendar-outline' style={{color: '#1abc9c'}} />
             </Item>
+            <DateTimePicker
+              isVisible={this.state.isDatePickerArrivalVisible}
+              onConfirm={this._handleDatePicked}
+              onCancel={this._hideDateTimePicker}
+            />
+
           </View>
 
           <Item regular style={styles.itemAdults}>

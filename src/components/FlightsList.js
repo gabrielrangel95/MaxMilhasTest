@@ -5,9 +5,9 @@ import { Text, Button, Icon } from 'native-base'
 export default class FlightsList extends Component {
 
 
-  _keyExtractor = (item, index) => index;
+  _keyExtractor = (item, index) => index; //required key for each element
 
-  _renderItem = ({item}) => (
+  _renderItem = ({item}) => ( //cells of the list
     <View style={styles.renderItem}>
       <View style={styles.card}>
         <View style={styles.cardRow}>
@@ -72,7 +72,7 @@ export default class FlightsList extends Component {
   );
 
   render(){
-    const {flights} = this.props
+    const {flights} = this.props //get the flights that was passed by props
     return(
       <FlatList
         keyExtractor={this._keyExtractor}
