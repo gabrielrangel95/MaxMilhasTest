@@ -25,10 +25,13 @@ For UI:  <a href="https://nativebase.io/">NativeBase</a>
 
 For Navigation: <a href="https://reactnavigation.org/">React Navigation</a>
 
-<h1>Todo's</h1>
+Date Picker: <a href="https://github.com/mmazzarolo/react-native-modal-datetime-picker">React Native Model DateTime Picker</a>
 
-- [ ] Date format for user date input ("Date da ida" and "Data da volta")
-- [ ] Comment all code 
+<h1>Todo's</h1>
+<strong>Note: </strong>All changes will be made on <a href="https://github.com/gabrielrangel95/MaxMilhasTest/tree/second_version">second version</a> branch
+
+- [X] Date format for user date input ("Date da ida" and "Data da volta")
+- [X] Comment all code 
 - [ ] Validations for specific input's
 - [ ] Autocomplete for ITA input's
 
