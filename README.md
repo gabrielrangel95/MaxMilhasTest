@@ -2,6 +2,12 @@
 
 Project made with <a href="https://facebook.github.io/react-native/">React-Native</a>
 
+<h1>Demo</1>
+<p align="center">
+<img src="https://uploaddeimagens.com.br/images/001/234/797/full/Simulator_Screen_Shot_-_iPhone_6_-_2018-01-02_at_13.26.05.png?1514907236" />
+<img src="https://uploaddeimagens.com.br/images/001/234/798/full/Simulator_Screen_Shot_-_iPhone_6_-_2018-01-02_at_13.26.29.png?1514907331" />
+<img src="https://uploaddeimagens.com.br/images/001/234/800/full/Simulator_Screen_Shot_-_iPhone_6_-_2018-01-02_at_13.26.39.png?1514907364" />
+
 For initialize the project run:
 ```
 yarn install
